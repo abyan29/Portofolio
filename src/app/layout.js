@@ -7,59 +7,58 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import "./globals.css";
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Project', href: '/project' },
-  { name: 'Tentang', href: '/tentang' },
+  { name: 'Home', href: '#home' },
+  { name: 'Project', href: '#project' },
+  { name: 'Tentang', href: '#tentang' },
 ];
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const currentNav = navigation.find((item) => item.href === pathname);
-  const pageTitle = currentNav ? currentNav.name : 'Dashboard';
+  const handleScroll = (e, href) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <html lang="id" className="h-full bg-gray-900">
+    <html lang="id" className="h-full bg-gray-900 scroll-smooth">
       <body className="h-full text-white antialiased">
         <div className="min-h-full flex flex-col">
           
           {/* NAVBAR GLOBAL */}
-          <Disclosure as="nav" className="bg-gray-800/50 border-b border-white/5">
+          <Disclosure as="nav" className="sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-white/5">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 
                 <div className="flex items-center">
-                <div className="shrink-0 flex items-center gap-2.5">
-                  <img 
-                    src="/fire.svg" 
-                    alt="Logo Portfolio" 
-                    className="size-6 w-auto h-6 object-contain" 
-                  />
-                  <span className="font-bold text-indigo-400 tracking-wider">
-                    PORTFOLIO
-                  </span>
-                </div>
+                  <div className="shrink-0 flex items-center gap-2.5">
+                    <img 
+                      src="/fire.svg" 
+                      alt="Logo Portfolio" 
+                      className="size-6 w-auto h-6 object-contain" 
+                    />
+                    <span className="font-bold text-indigo-400 tracking-wider">
+                      PORTFOLIO
+                    </span>
+                  </div>
 
                   {/* Desktop Menu */}
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
-                      {navigation.map((item) => {
-                        const isCurrent = pathname === item.href;
-                        return (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            aria-current={isCurrent ? 'page' : undefined}
-                            className={`rounded-md px-3 py-2 text-sm font-medium transition ${
-                              isCurrent
-                                ? 'bg-gray-950/50 text-white'
-                                : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                            }`}
-                          >
-                            {item.name}
-                          </Link>
-                        );
-                      })}
+                      {navigation.map((item) => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          onClick={(e) => handleScroll(e, item.href)}
+                          className="text-gray-300 hover:bg-white/5 hover:text-white rounded-md px-3 py-2 text-sm font-medium transition"
+                        >
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -79,39 +78,24 @@ export default function RootLayout({ children }) {
             {/* Mobile Menu Panel */}
             <DisclosurePanel className="md:hidden">
               <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                {navigation.map((item) => {
-                  const isCurrent = pathname === item.href;
-                  return (
-                    <DisclosureButton
-                      key={item.name}
-                      as={Link}
-                      href={item.href}
-                      className={`block rounded-md px-3 py-2 text-base font-medium ${
-                        isCurrent 
-                          ? 'bg-gray-950/50 text-white' 
-                          : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                      }`}
-                    >
-                      {item.name}
-                    </DisclosureButton>
-                  );
-                })}
+                {navigation.map((item) => (
+                  <DisclosureButton
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    onClick={(e) => handleScroll(e, item.href)}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white"
+                  >
+                    {item.name}
+                  </DisclosureButton>
+                ))}
               </div>
             </DisclosurePanel>
           </Disclosure>
 
-          {/* HEADER DINAMIS */}
-          <header className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:inset-y-0 after:border-y after:border-white/10">
-            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">{pageTitle}</h1>
-            </div>
-          </header>
-
           {/* KONTEN UTAMA */}
           <main className="flex-grow">
-            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              {children} 
-            </div>
+            {children} 
           </main>
 
         </div>
