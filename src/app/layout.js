@@ -10,6 +10,7 @@ const navigation = [
   { name: 'Home', href: '#home' },
   { name: 'Project', href: '#project' },
   { name: 'Tentang', href: '#tentang' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 export default function RootLayout({ children }) {
