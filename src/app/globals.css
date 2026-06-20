@@ -22,7 +22,8 @@
 
 .animate-float-shape {
   position: absolute;
-  bottom: 0;
+  bottom: -100px;
   pointer-events: none;
   animation: float-up linear infinite;
+  animation-fill-mode: backwards;
 }
