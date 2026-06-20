@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from 'next/link';
 
 export default function Home() {
@@ -26,6 +29,24 @@ const shapes = Array.from({ length: 50 }, () => {
     ][Math.floor(Math.random() * 4)],
   };
 });
+
+const [name, setName] = useState("");
+const [message, setMessage] = useState("");
+
+const sendToWhatsApp = (e) => {
+  e.preventDefault();
+
+  const phoneNumber = "6281212158200";
+
+  const text = encodeURIComponent(
+    `Halo Abyan, saya ${name}\n\n${message}`
+  );
+
+  window.open(
+    `https://wa.me/${phoneNumber}?text=${text}`,
+    "_blank"
+  );
+};
 
   return (
     <div className="space-y-20 py-10 relative min-h-screen overflow-hidden">
@@ -182,27 +203,51 @@ const shapes = Array.from({ length: 50 }, () => {
               Quick Message
             </h3>
 
-            <form className="space-y-4">
-              <div>
-                <input type="text" placeholder="Your Name" className="w-full bg-gray-800/40 border border-white/10 hover:border-white/20 focus:border-indigo-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition" required/>
-              </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
 
-              <div>
-                <textarea 
-                  rows="5"
-                  placeholder="Your Message"
-                  className="w-full bg-gray-800/40 border border-white/10 hover:border-white/20 focus:border-indigo-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition resize-none"
-                  required
-                ></textarea>
-              </div>
+              const name = e.target.name.value;
+              const message = e.target.message.value;
 
-              <button 
-                type="submit"
-                className="w-full py-3 font-semibold text-sm rounded-xl text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition tracking-wide border border-indigo-400/20"
-              >
-                Send Message
-              </button>
-            </form>
+              const text = encodeURIComponent(
+                `Halo Abyan, saya ${name}\n\n${message}`
+              );
+
+              window.open(
+                `https://wa.me/6281212158200?text=${text}`,
+                "_blank"
+              );
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <input
+                name="name"
+                type="text"
+                placeholder="Your Name"
+                className="w-full bg-gray-800/40 border border-white/10 hover:border-white/20 focus:border-indigo-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition"
+                required
+              />
+            </div>
+
+            <div>
+              <textarea
+                name="message"
+                rows="5"
+                placeholder="Your Message"
+                className="w-full bg-gray-800/40 border border-white/10 hover:border-white/20 focus:border-indigo-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition resize-none"
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 font-semibold text-sm rounded-xl text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition tracking-wide border border-indigo-400/20"
+            >
+              Send Message
+            </button>
+          </form>
           </div>
         </div>
       </section>
